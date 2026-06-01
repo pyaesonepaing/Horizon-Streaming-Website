@@ -2,7 +2,14 @@ FROM php:8.2-apache
 
 # Install dependencies
 RUN apt-get update && apt-get install -y \
-    libpng-dev libjpeg-dev libfreetype6-dev zip unzip git curl
+    libpng-dev \
+    libjpeg-dev \
+    libfreetype6-dev \
+    zip \
+    unzip \
+    git \
+    curl \
+    libpq-dev
 
 # Enable Apache rewrite (VERY IMPORTANT for Laravel routes)
 RUN a2enmod rewrite
