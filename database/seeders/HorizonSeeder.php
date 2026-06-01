@@ -12,21 +12,21 @@ class HorizonSeeder extends Seeder
     public function run(): void
     {
         User::updateOrCreate(
-            ['email' => 'admin@horizon.test'],
-            ['name' => 'Admin', 'password' => Hash::make('password'), 'is_admin' => true]
+            ['email' => 'admin1horizon@gmail.com'],
+            ['name' => 'Admin', 'password' => Hash::make('Horizon123!@#'), 'is_admin' => true]
         );
 
-        Plan::updateOrCreate(
-            ['code' => 'premium_monthly'],
-            [
-                'name' => 'Premium Monthly',
-                'price_cents' => 999,
-                'currency' => 'USD',
-                'interval' => 'month',
-                'interval_count' => 1,
-                'description' => 'Download any video while active.',
-                'is_active' => true,
-            ]
-        );
+        // Plan::updateOrCreate(
+        //     ['code' => 'premium_monthly'],
+        //     [
+        //         'name' => 'Premium Monthly',
+        //         'price_cents' => 999,
+        //         'currency' => 'USD',
+        //         'interval' => 'month',
+        //         'interval_count' => 1,
+        //         'description' => 'Download any video while active.',
+        //         'is_active' => true,
+        //     ]
+        // );
     }
 }
