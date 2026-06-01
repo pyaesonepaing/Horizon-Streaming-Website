@@ -1,0 +1,24 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Custom styles */
+
+body {
+    font-family: 'Inter', sans-serif;
+}
+
+/* card style */
+.card {
+    @apply bg-white rounded-xl shadow-md p-6;
+}
+
+/* button style */
+.btn-primary {
+    @apply bg-black text-white px-4 py-2 rounded-lg hover:bg-gray-800 transition;
+}
+
+/* input style */
+.input-field {
+    @apply w-full border border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-black;
+}
