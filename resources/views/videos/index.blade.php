@@ -497,7 +497,7 @@
                             <div class="video-thumb-wrap">
                                 @if($video->poster_path)
                                     <img
-                                        src="{{ asset('storage/' . $video->poster_path) }}"
+                                        src="{{ $video->poster_path }}"
                                         alt="{{ $video->title }}"
                                         class="video-thumb"
                                     >

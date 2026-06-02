@@ -446,9 +446,9 @@
                         >
                             <td>
                                 @if($video->poster_path)
-                                    <a href="{{ asset('storage/' . $video->poster_path) }}" target="_blank" class="poster-box">
+                                    <a href="{{ $video->poster_path }}" target="_blank" class="poster-box">
                                         <img
-                                            src="{{ asset('storage/' . $video->poster_path) }}"
+                                            src="{{ $video->poster_path }}"
                                             alt="{{ $video->title }}"
                                         >
                                     </a>

@@ -308,7 +308,7 @@
                 @foreach($featuredVideos as $video)
                     <a href="{{ route('videos.show', $video) }}" class="featured-card">
                         @if($video->poster_path)
-                            <img src="{{ asset('storage/' . $video->poster_path) }}" alt="{{ $video->title }}">
+                            <img src="{{ $video->poster_path }}" alt="{{ $video->title }}">
                         @else
                             <img src="https://via.placeholder.com/800x1200/111111/cccccc?text=No+Poster" alt="{{ $video->title }}">
                         @endif
@@ -336,7 +336,7 @@
                 @foreach($trendingVideos as $video)
                     <a href="{{ route('videos.show', $video) }}" class="poster-card">
                         @if($video->poster_path)
-                            <img class="poster-image" src="{{ asset('storage/' . $video->poster_path) }}" alt="{{ $video->title }}">
+                            <img class="poster-image" src="{{ $video->poster_path }}" alt="{{ $video->title }}">
                         @else
                             <img class="poster-image" src="https://via.placeholder.com/600x900/111111/cccccc?text=No+Poster" alt="{{ $video->title }}">
                         @endif
@@ -434,7 +434,7 @@
                     @foreach($category->videos->take(6) as $video)
                         <a href="{{ route('videos.show', $video) }}" class="poster-card">
                             @if($video->poster_path)
-                                <img class="poster-image" src="{{ asset('storage/' . $video->poster_path) }}" alt="{{ $video->title }}">
+                                <img class="poster-image" src="{{ $video->poster_path }}" alt="{{ $video->title }}">
                             @else
                                 <img class="poster-image" src="https://via.placeholder.com/600x900/111111/cccccc?text=No+Poster" alt="{{ $video->title }}">
                             @endif

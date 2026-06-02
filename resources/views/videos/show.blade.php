@@ -34,7 +34,7 @@
             padding:90px 6% 55px;
             background:
                 linear-gradient(to right, rgba(0,0,0,0.9) 25%, rgba(0,0,0,0.5) 60%, rgba(0,0,0,0.82) 100%),
-                url('{{ $video->poster_path ? asset('storage/' . $video->poster_path) : 'https://images.unsplash.com/photo-1489599849927-2ee91cede3ba?auto=format&fit=crop&w=1600&q=80' }}');
+                url('{{ $video->poster_path ? $video->poster_path : 'https://images.unsplash.com/photo-1489599849927-2ee91cede3ba?auto=format&fit=crop&w=1600&q=80' }}');
             background-size:cover;
             background-position:center;
             border-bottom:1px solid rgba(255,255,255,0.08);
@@ -416,16 +416,16 @@
     {{-- ✅ Subscribed user → FULL video --}}
     <video id="mainVideo"
         controls
-        poster="{{ $video->poster_path ? asset('storage/' . $video->poster_path) : '' }}">
-        <source src="{{ asset('storage/' . $video->stream_path) }}" type="video/mp4">
+        poster="{{ $video->poster_path ? $video->poster_path : '' }}">
+        <source src="{{ $video->stream_path }}" type="video/mp4">
     </video>
 
 @elseif($video->trailer_path)
     {{-- ✅ Guest / non-subscribed → TRAILER only --}}
     <video id="mainVideo"
         controls
-        poster="{{ $video->poster_path ? asset('storage/' . $video->poster_path) : '' }}">
-        <source src="{{ asset('storage/' . $video->trailer_path) }}" type="video/mp4">
+        poster="{{ $video->poster_path ? $video->poster_path : '' }}">
+        <source src="{{ $video->trailer_path }}" type="video/mp4">
     </video>
 
 @else
@@ -514,7 +514,7 @@
 
                         @if($video->poster_path)
                             <img
-                                src="{{ asset('storage/' . $video->poster_path) }}"
+                                src="{{ $video->poster_path }}"
                                 alt="{{ $video->title }}"
                                 class="side-poster"
                             >
