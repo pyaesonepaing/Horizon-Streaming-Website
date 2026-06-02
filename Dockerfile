@@ -30,9 +30,14 @@ RUN npm install
 RUN npm run build
 
 # ✅ Permissions FIX (IMPORTANT)
-RUN mkdir -p storage bootstrap/cache \
-    && chown -R www-data:www-data storage bootstrap/cache \
-    && chmod -R 775 storage bootstrap/cache
+RUN mkdir -p storage/app/public \
+    storage/framework \
+    storage/logs \
+    bootstrap/cache \
+ && chown -R www-data:www-data storage bootstrap/cache \
+ && chmod -R 775 storage bootstrap/cache
+
+RUN php artisan storage:link || true
 
 RUN php artisan optimize:clear || true
 
