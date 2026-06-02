@@ -54,6 +54,7 @@ class AdminVideoController extends Controller
 
     public function store(Request $request)
     {
+        dd('store reached');
         $data = $request->validate([
             'title' => ['required','string','max:255'],
             'description' => ['nullable','string'],
