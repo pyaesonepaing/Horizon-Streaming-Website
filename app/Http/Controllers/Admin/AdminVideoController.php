@@ -54,82 +54,87 @@ class AdminVideoController extends Controller
     }
 
     public function store(Request $request)
-    {
-        dd('store reached');
-        $data = $request->validate([
-            'title' => ['required','string','max:255'],
-            'description' => ['nullable','string'],
-            'is_published' => ['nullable','boolean'],
-            'is_downloadable' => ['nullable','boolean'],
-            'categories' => ['array'],
-            'categories.*' => ['integer','exists:categories,id'],
+{
+    dd('POST works');
+}
 
-            'poster' => ['nullable','image','max:4096'],
-            'trailer_file' => ['nullable','file','mimetypes:video/mp4,video/quicktime'],
-            'stream_file' => ['required','file','mimetypes:video/mp4,video/quicktime,application/vnd.apple.mpegurl'],
-            'download_file' => ['nullable','file','mimetypes:video/mp4,video/quicktime'],
-        ]);
+    // public function store(Request $request)
+    // {
+    //     dd('store reached');
+    //     $data = $request->validate([
+    //         'title' => ['required','string','max:255'],
+    //         'description' => ['nullable','string'],
+    //         'is_published' => ['nullable','boolean'],
+    //         'is_downloadable' => ['nullable','boolean'],
+    //         'categories' => ['array'],
+    //         'categories.*' => ['integer','exists:categories,id'],
 
-        $slug = Str::slug($data['title']).'-'.Str::random(6);
+    //         'poster' => ['nullable','image','max:4096'],
+    //         'trailer_file' => ['nullable','file','mimetypes:video/mp4,video/quicktime'],
+    //         'stream_file' => ['required','file','mimetypes:video/mp4,video/quicktime,application/vnd.apple.mpegurl'],
+    //         'download_file' => ['nullable','file','mimetypes:video/mp4,video/quicktime'],
+    //     ]);
 
-        $posterPath = null;
-        if ($request->hasFile('poster')) {
-            $posterPath = Cloudinary::uploadFile(
-                $request->file('poster')->getRealPath(),
-                ['folder' => 'horizon/posters']
-            )->getSecurePath();
-        }
-        $trailerPath = null;
+    //     $slug = Str::slug($data['title']).'-'.Str::random(6);
 
-        if ($request->hasFile('trailer_file')) {
-            $trailerPath = Cloudinary::uploadFile(
-                $request->file('trailer_file')->getRealPath(),
-                ['folder' => 'horizon/trailers']
-            )->getSecurePath();
-        }
+    //     $posterPath = null;
+    //     if ($request->hasFile('poster')) {
+    //         $posterPath = Cloudinary::uploadFile(
+    //             $request->file('poster')->getRealPath(),
+    //             ['folder' => 'horizon/posters']
+    //         )->getSecurePath();
+    //     }
+    //     $trailerPath = null;
 
-        $streamPath = Cloudinary::uploadFile(
-            $request->file('stream_file')->getRealPath(),
-            ['folder' => 'horizon/videos']
-        )->getSecurePath();
+    //     if ($request->hasFile('trailer_file')) {
+    //         $trailerPath = Cloudinary::uploadFile(
+    //             $request->file('trailer_file')->getRealPath(),
+    //             ['folder' => 'horizon/trailers']
+    //         )->getSecurePath();
+    //     }
 
-        $downloadPath = null;
-        if ($request->hasFile('download_file')) {
-            $downloadPath = Cloudinary::uploadFile(
-                $request->file('download_file')->getRealPath(),
-                ['folder' => 'horizon/downloads']
-            )->getSecurePath();
-        }
+    //     $streamPath = Cloudinary::uploadFile(
+    //         $request->file('stream_file')->getRealPath(),
+    //         ['folder' => 'horizon/videos']
+    //     )->getSecurePath();
 
-        $video = Video::create([
-            'uploaded_by' => $request->user()->id,
-            'title' => $data['title'],
-            'slug' => $slug,
-            'description' => $data['description'] ?? null,
-            'poster_path' => $posterPath,
-            'trailer_path' => $trailerPath,
-            'stream_path' => $streamPath,
-            'download_path' => $downloadPath,
-            'is_published' => (bool)($data['is_published'] ?? false),
-            'published_at' => !empty($data['is_published']) ? now() : null,
-            'is_downloadable' => (bool)($data['is_downloadable'] ?? true),
-        ]);
+    //     $downloadPath = null;
+    //     if ($request->hasFile('download_file')) {
+    //         $downloadPath = Cloudinary::uploadFile(
+    //             $request->file('download_file')->getRealPath(),
+    //             ['folder' => 'horizon/downloads']
+    //         )->getSecurePath();
+    //     }
 
-        $video->categories()->sync($data['categories'] ?? []);
+    //     $video = Video::create([
+    //         'uploaded_by' => $request->user()->id,
+    //         'title' => $data['title'],
+    //         'slug' => $slug,
+    //         'description' => $data['description'] ?? null,
+    //         'poster_path' => $posterPath,
+    //         'trailer_path' => $trailerPath,
+    //         'stream_path' => $streamPath,
+    //         'download_path' => $downloadPath,
+    //         'is_published' => (bool)($data['is_published'] ?? false),
+    //         'published_at' => !empty($data['is_published']) ? now() : null,
+    //         'is_downloadable' => (bool)($data['is_downloadable'] ?? true),
+    //     ]);
 
-        AdminActivityLog::create([
-            'admin_user_id' => $request->user()->id,
-            'entity_type' => 'Video',
-            'entity_id' => $video->id,
-            'action' => 'create',
-            'before' => null,
-            'after' => $video->toArray(),
-            'ip_address' => $request->ip(),
-            'user_agent' => $request->userAgent(),
-        ]);
+    //     $video->categories()->sync($data['categories'] ?? []);
 
-        return redirect()->route('admin.videos.index')->with('success', 'Video created.');
-    }
+    //     AdminActivityLog::create([
+    //         'admin_user_id' => $request->user()->id,
+    //         'entity_type' => 'Video',
+    //         'entity_id' => $video->id,
+    //         'action' => 'create',
+    //         'before' => null,
+    //         'after' => $video->toArray(),
+    //         'ip_address' => $request->ip(),
+    //         'user_agent' => $request->userAgent(),
+    //     ]);
+
+    //     return redirect()->route('admin.videos.index')->with('success', 'Video created.');
+    // }
 
     public function edit(Video $video)
     {
