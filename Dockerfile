@@ -41,6 +41,11 @@ RUN php artisan storage:link || true
 
 RUN php artisan optimize:clear || true
 
+RUN echo "upload_max_filesize=50M" > /usr/local/etc/php/conf.d/uploads.ini \
+ && echo "post_max_size=50M" >> /usr/local/etc/php/conf.d/uploads.ini \
+ && echo "memory_limit=256M" >> /usr/local/etc/php/conf.d/uploads.ini \
+ && echo "max_execution_time=300" >> /usr/local/etc/php/conf.d/uploads.ini
+
 EXPOSE 80
 
 CMD ["apache2-foreground"]
