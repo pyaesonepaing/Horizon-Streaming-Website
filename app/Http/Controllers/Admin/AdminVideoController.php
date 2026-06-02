@@ -174,35 +174,51 @@ class AdminVideoController extends Controller
             'stream_file' => ['nullable','file','mimetypes:video/mp4,video/quicktime,application/vnd.apple.mpegurl'],
             'download_file' => ['nullable','file','mimetypes:video/mp4,video/quicktime'],
         ]);
-$cloudinary = new Cloudinary(env('CLOUDINARY_URL'));
 
         if ($request->hasFile('poster')) {
-            $video->poster_path = Cloudinary::uploadFile(
-                $request->file('poster')->getRealPath(),
-                ['folder' => 'horizon/posters']
-            )->getSecurePath();
-        }
+    $upload = $cloudinary->uploadApi()->upload(
+        $request->file('poster')->getRealPath(),
+        ['folder' => 'horizon/posters']
+    );
+
+    $video->poster_path = $upload['secure_url'];
+}
 
         if ($request->hasFile('trailer_file')) {
-            $video->trailer_path = Cloudinary::uploadFile(
-                $request->file('trailer_file')->getRealPath(),
-                ['folder' => 'horizon/trailers']
-            )->getSecurePath();
-        }
+    $upload = $cloudinary->uploadApi()->upload(
+        $request->file('trailer_file')->getRealPath(),
+        [
+            'folder' => 'horizon/trailers',
+            'resource_type' => 'video',
+        ]
+    );
+
+    $video->trailer_path = $upload['secure_url'];
+}
 
         if ($request->hasFile('stream_file')) {
-            $video->stream_path = Cloudinary::uploadFile(
-                $request->file('stream_file')->getRealPath(),
-                ['folder' => 'horizon/videos']
-            )->getSecurePath();
-        }
+    $upload = $cloudinary->uploadApi()->upload(
+        $request->file('stream_file')->getRealPath(),
+        [
+            'folder' => 'horizon/videos',
+            'resource_type' => 'video',
+        ]
+    );
+
+    $video->stream_path = $upload['secure_url'];
+}
 
         if ($request->hasFile('download_file')) {
-            $video->download_path = Cloudinary::uploadFile(
-                $request->file('download_file')->getRealPath(),
-                ['folder' => 'horizon/downloads']
-            )->getSecurePath();
-        }
+    $upload = $cloudinary->uploadApi()->upload(
+        $request->file('download_file')->getRealPath(),
+        [
+            'folder' => 'horizon/downloads',
+            'resource_type' => 'video',
+        ]
+    );
+
+    $video->download_path = $upload['secure_url'];
+}
 
         $video->title = $data['title'];
         $video->description = $data['description'] ?? null;
