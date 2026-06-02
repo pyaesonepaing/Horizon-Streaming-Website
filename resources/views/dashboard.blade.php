@@ -27,7 +27,7 @@
             padding:60px 6%;
             background:
                 linear-gradient(to right, rgba(0,0,0,0.88) 30%, rgba(0,0,0,0.45) 60%, rgba(0,0,0,0.7) 100%),
-                url('storage/img/intro_img.avif');
+                url('https://images.unsplash.com/photo-1489599849927-2ee91cede3ba?auto=format&fit=crop&w=1600&q=80');
             background-size:cover;
             background-position:center;
         }
