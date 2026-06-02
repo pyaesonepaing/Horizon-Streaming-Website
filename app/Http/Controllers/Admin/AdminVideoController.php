@@ -9,6 +9,7 @@ use App\Models\Video;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
+use CloudinaryLabs\CloudinaryLaravel\Facades\Cloudinary;
 
 class AdminVideoController extends Controller
 {
@@ -73,19 +74,31 @@ class AdminVideoController extends Controller
 
         $posterPath = null;
         if ($request->hasFile('poster')) {
-            $posterPath = $request->file('poster')->store('posters', 'public');
+            $posterPath = Cloudinary::uploadFile(
+                $request->file('poster')->getRealPath(),
+                ['folder' => 'horizon/posters']
+            )->getSecurePath();
         }
         $trailerPath = null;
 
         if ($request->hasFile('trailer_file')) {
-            $trailerPath = $request->file('trailer_file')->store('trailers', 'public');
+            $trailerPath = Cloudinary::uploadFile(
+                $request->file('trailer_file')->getRealPath(),
+                ['folder' => 'horizon/trailers']
+            )->getSecurePath();
         }
 
-        $streamPath = $request->file('stream_file')->store('videos', 'public');
+        $streamPath = Cloudinary::uploadFile(
+            $request->file('stream_file')->getRealPath(),
+            ['folder' => 'horizon/videos']
+        )->getSecurePath();
 
         $downloadPath = null;
         if ($request->hasFile('download_file')) {
-            $downloadPath = $request->file('download_file')->store('downloads', 'public');
+            $downloadPath = Cloudinary::uploadFile(
+                $request->file('download_file')->getRealPath(),
+                ['folder' => 'horizon/downloads']
+            )->getSecurePath();
         }
 
         $video = Video::create([
@@ -144,26 +157,31 @@ class AdminVideoController extends Controller
         ]);
 
         if ($request->hasFile('poster')) {
-            if ($video->poster_path) Storage::disk('public')->delete($video->poster_path);
-            $video->poster_path = $request->file('poster')->store('posters', 'public');
+            $video->poster_path = Cloudinary::uploadFile(
+                $request->file('poster')->getRealPath(),
+                ['folder' => 'horizon/posters']
+            )->getSecurePath();
         }
 
         if ($request->hasFile('trailer_file')) {
-            if ($video->trailer_path) {
-                Storage::disk('public')->delete($video->trailer_path);
-            }
-
-            $video->trailer_path = $request->file('trailer_file')->store('trailers', 'public');
+            $video->trailer_path = Cloudinary::uploadFile(
+                $request->file('trailer_file')->getRealPath(),
+                ['folder' => 'horizon/trailers']
+            )->getSecurePath();
         }
 
         if ($request->hasFile('stream_file')) {
-            Storage::disk('public')->delete($video->stream_path);
-            $video->stream_path = $request->file('stream_file')->store('videos', 'public');
+            $video->stream_path = Cloudinary::uploadFile(
+                $request->file('stream_file')->getRealPath(),
+                ['folder' => 'horizon/videos']
+            )->getSecurePath();
         }
 
         if ($request->hasFile('download_file')) {
-            if ($video->download_path) Storage::disk('public')->delete($video->download_path);
-            $video->download_path = $request->file('download_file')->store('downloads', 'public');
+            $video->download_path = Cloudinary::uploadFile(
+                $request->file('download_file')->getRealPath(),
+                ['folder' => 'horizon/downloads']
+            )->getSecurePath();
         }
 
         $video->title = $data['title'];
@@ -197,11 +215,6 @@ class AdminVideoController extends Controller
     {
         $before = $video->toArray();
 
-        if ($video->poster_path) Storage::disk('public')->delete($video->poster_path);
-        if ($video->trailer_path) Storage::disk('public')->delete($video->trailer_path);
-        if ($video->stream_path) Storage::disk('public')->delete($video->stream_path);
-        if ($video->download_path) Storage::disk('public')->delete($video->download_path);
-
         $video->delete();
 
         AdminActivityLog::create([
@@ -215,6 +228,7 @@ class AdminVideoController extends Controller
             'user_agent' => $request->userAgent(),
         ]);
 
-        return redirect()->route('admin.videos.index')->with('success', 'Video deleted.');
+        return redirect()->route('admin.videos.index')
+            ->with('success', 'Video deleted.');
     }
 }
