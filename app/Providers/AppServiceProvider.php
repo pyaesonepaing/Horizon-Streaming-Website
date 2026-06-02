@@ -25,7 +25,6 @@ class AppServiceProvider extends ServiceProvider
         URL::forceScheme('https');
     }
     if (!File::exists(storage_path('logs'))) {
-        File::makeDirectory(storage_path('logs'), 0755, true);
     }
 }
 
