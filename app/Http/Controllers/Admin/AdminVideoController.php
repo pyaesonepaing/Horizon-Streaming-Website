@@ -9,7 +9,7 @@ use App\Models\Video;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
-use CloudinaryLabs\CloudinaryLaravel\Facades\Cloudinary;
+use Cloudinary\Cloudinary;
 
 class AdminVideoController extends Controller
 {
@@ -70,34 +70,54 @@ class AdminVideoController extends Controller
         ]);
 
         $slug = Str::slug($data['title']).'-'.Str::random(6);
+        $cloudinary = new Cloudinary(env('CLOUDINARY_URL'));
 
         $posterPath = null;
+
         if ($request->hasFile('poster')) {
-            $posterPath = Cloudinary::uploadFile(
+            $upload = $cloudinary->uploadApi()->upload(
                 $request->file('poster')->getRealPath(),
                 ['folder' => 'horizon/posters']
-            )->getSecurePath();
+            );
+
+            $posterPath = $upload['secure_url'];
         }
         $trailerPath = null;
 
         if ($request->hasFile('trailer_file')) {
-            $trailerPath = Cloudinary::uploadFile(
+            $upload = $cloudinary->uploadApi()->upload(
                 $request->file('trailer_file')->getRealPath(),
-                ['folder' => 'horizon/trailers']
-            )->getSecurePath();
+                [
+                    'folder' => 'horizon/trailers',
+                    'resource_type' => 'video',
+                ]
+            );
+
+            $trailerPath = $upload['secure_url'];
         }
 
-        $streamPath = Cloudinary::uploadFile(
+        $upload = $cloudinary->uploadApi()->upload(
             $request->file('stream_file')->getRealPath(),
-            ['folder' => 'horizon/videos']
-        )->getSecurePath();
+            [
+                'folder' => 'horizon/videos',
+                'resource_type' => 'video',
+            ]
+        );
+
+        $streamPath = $upload['secure_url'];
 
         $downloadPath = null;
+
         if ($request->hasFile('download_file')) {
-            $downloadPath = Cloudinary::uploadFile(
+            $upload = $cloudinary->uploadApi()->upload(
                 $request->file('download_file')->getRealPath(),
-                ['folder' => 'horizon/downloads']
-            )->getSecurePath();
+                [
+                    'folder' => 'horizon/downloads',
+                    'resource_type' => 'video',
+                ]
+            );
+
+            $downloadPath = $upload['secure_url'];
         }
 
         $video = Video::create([
@@ -154,6 +174,7 @@ class AdminVideoController extends Controller
             'stream_file' => ['nullable','file','mimetypes:video/mp4,video/quicktime,application/vnd.apple.mpegurl'],
             'download_file' => ['nullable','file','mimetypes:video/mp4,video/quicktime'],
         ]);
+$cloudinary = new Cloudinary(env('CLOUDINARY_URL'));
 
         if ($request->hasFile('poster')) {
             $video->poster_path = Cloudinary::uploadFile(
