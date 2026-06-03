@@ -22,9 +22,12 @@ class AppServiceProvider extends ServiceProvider
     public function boot()
 {
     if (app()->environment('production')) {
-        URL::forceScheme('https');
+        URL::forceScheme('https'); //for hosting
+        // URL::forceScheme('http'); //for local
     }
+
     if (!File::exists(storage_path('logs'))) {
+        File::makeDirectory(storage_path('logs'), 0755, true);
     }
 }
 
