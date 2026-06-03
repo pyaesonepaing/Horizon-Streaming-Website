@@ -460,7 +460,7 @@
                     <div class="plan-card {{ $index === 1 ? 'featured' : '' }}">
                         <h3>{{ $plan->name }}</h3>
                         <div class="plan-price">
-                            ${{ number_format($plan->price_cents / 100, 2) }}
+                            {{ $plan->currency }} {{ number_format($plan->price_cents) }}
                         </div>
 
                         <p>{{ $plan->description ?: 'Premium access for Horizon members.' }}</p>
