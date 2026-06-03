@@ -124,7 +124,7 @@
                     <h2>Plan Summary</h2>
 
                     <div class="info-line"><strong>Plan:</strong> {{ $plan->name }}</div>
-                    <div class="info-line"><strong>Price:</strong>{{ number_format($plan->price_cents / 100, 2) }}</div>
+                    <div class="info-line"><strong>Price:</strong>{{ $plan->currency }} {{ number_format($plan->price_cents) }}</div>
                     <div class="info-line"><strong>Duration:</strong> every {{ $plan->interval_count }} {{ \Illuminate\Support\Str::plural($plan->interval, $plan->interval_count) }}</div>
                     <div class="info-line"><strong>Description:</strong> {{ $plan->description ?: 'Premium Horizon access.' }}</div>
 
