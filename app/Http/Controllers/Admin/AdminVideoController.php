@@ -175,6 +175,8 @@ class AdminVideoController extends Controller
             'download_file' => ['nullable','file','mimetypes:video/mp4,video/quicktime'],
         ]);
 
+        $cloudinary = new Cloudinary(env('CLOUDINARY_URL'));
+
         if ($request->hasFile('poster')) {
     $upload = $cloudinary->uploadApi()->upload(
         $request->file('poster')->getRealPath(),
